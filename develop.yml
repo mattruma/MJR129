@@ -16,13 +16,6 @@ stages:
   - job: Validate
 
     steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(SubscriptionId)
-        scriptType: pscore
-        scriptLocation: inlineScript
-        inlineScript: |
-          az upgrade --yes
 
     - task: AzureCLI@2
       inputs:
