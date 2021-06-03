@@ -16,7 +16,8 @@ stages:
   - job: Validate
 
     steps:
-    - bash: az --version
+    - script: az --version
+    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
     
     - task: AzureCLI@2
       inputs:
