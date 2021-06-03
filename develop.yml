@@ -16,7 +16,8 @@ stages:
   - job: Validate
 
     steps:
-
+    - bash: az --version
+    
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(SubscriptionId)
