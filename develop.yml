@@ -13,13 +13,33 @@ stages:
 
   jobs:      
 
-  - job: Validate
+  - job: ValidateAndDeploy
 
     steps:
     - script: az --version
     - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
 
     - task: AzureCLI@2
+      displayName: Validate
+      inputs:
+        azureSubscription: $(SubscriptionId)
+        scriptType: pscore
+        scriptPath: $(Build.SourcesDirectory)/validate.ps1
+        arguments:
+          -Prefix $(Prefix) `
+          -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
+
+    - task: ManualValidation@0
+      displayName: Approval Pending
+      timeoutInMinutes: 1440 # task times out in 1 day
+      inputs:
+        notifyUsers: |
+          maruma@microsoft.com
+        instructions: 'Please validate the build configuration and resume'
+        onTimeout: 'resume'
+
+    - task: AzureCLI@2
+      displayName: Deploy
       inputs:
         azureSubscription: $(SubscriptionId)
         scriptType: pscore
@@ -27,11 +47,3 @@ stages:
         arguments:
           -Prefix $(Prefix) `
           -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
-
-    - task: ManualValidation@0
-      timeoutInMinutes: 1440 # task times out in 1 day
-      inputs:
-        notifyUsers: |
-          maruma@microsoft.com
-        instructions: 'Please validate the build configuration and resume'
-        onTimeout: 'resume'

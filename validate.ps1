@@ -14,7 +14,7 @@ az group create `
     -n $ResourceGroupName `
     -l $Location
 
-az deployment group create `
+az deployment group what-if `
     -n deploy `
     -f $TemplateFile `
     -g $ResourceGroupName `
