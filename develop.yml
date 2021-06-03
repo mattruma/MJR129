@@ -23,5 +23,5 @@ stages:
         scriptType: pscore
         scriptPath: $(Build.SourcesDirectory)/deploy.ps1
         arguments:
-          --Prefix $(Prefix) `
+          -Prefix $(Prefix) `
           -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
