@@ -20,16 +20,7 @@ stages:
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(SubscriptionId)
-        scriptType: pscore
-        scriptLocation: inlineScript
-        inlineScript: |
-          az --version
-          az upgrade --yes
-
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(SubscriptionId)
-        scriptType: pscore
+        scriptType: ps
         scriptPath: $(Build.SourcesDirectory)/deploy.ps1
         arguments:
           -Prefix $(Prefix) `
