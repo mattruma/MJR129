@@ -27,10 +27,10 @@ stages:
       inputs:
         azureSubscription: $(SubscriptionId)
         scriptType: pscore
-        scriptPath: $(Build.DefaultWorkingDirectory)/validate.ps1
+        scriptPath: $(Build.SourcesDirectory)/validate.ps1
         arguments:
           -Prefix $(Prefix) `
-          -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
+          -TemplateFile $(Build.SourcesDirectory)/deploy.bicep
     
   - job: WaitingApproval
     dependsOn: Validate
@@ -64,7 +64,7 @@ stages:
             inputs:
               azureSubscription: $(SubscriptionId)
               scriptType: pscore
-              scriptPath: $(Build.DefaultWorkingDirectory)/deploy.ps1
+              scriptPath: $(Build.SourcesDirectory)/deploy.ps1
               arguments:
                 -Prefix $(Prefix) `
-                -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
+                -TemplateFile $(Build.SourcesDirectory)/deploy.bicep
