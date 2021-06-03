@@ -22,8 +22,7 @@ stages:
         scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
-          az config set auto-upgrade.prompt=no
-          az config set auto-upgrade.enable=yes
+          az upgrade
 
     - task: AzureCLI@2
       inputs:
