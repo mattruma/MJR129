@@ -47,17 +47,21 @@ stages:
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
    
-  - job: Deploy
+  - deployment: Deploy
     dependsOn: WaitingApproval
-
-    steps:
-  
-    - task: AzureCLI@2
-      displayName: Deploy
-      inputs:
-        azureSubscription: $(SubscriptionId)
-        scriptType: pscore
-        scriptPath: $(Build.SourcesDirectory)/deploy.ps1
-        arguments:
-          -Prefix $(Prefix) `
-          -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
+    environment: Develop
+    strategy:
+      runonce:
+        deploy:
+      
+          steps:
+        
+          - task: AzureCLI@2
+            displayName: Deploy
+            inputs:
+              azureSubscription: $(SubscriptionId)
+              scriptType: pscore
+              scriptPath: $(Build.SourcesDirectory)/deploy.ps1
+              arguments:
+                -Prefix $(Prefix) `
+                -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
