@@ -1,0 +1,27 @@
+trigger:
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+
+- stage: Develop
+
+  variables:
+  - group: Develop
+
+  jobs:      
+
+  - job: Validate
+
+    steps:
+
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: $(SubscriptionId)
+        ScriptType: FilePath
+        ScriptPath: $(Build.SourcesDirectory)/deploy.ps1
+        ScriptArguments: -Prefix $(Prefix)
+        azurePowerShellVersion: LatestVersion
+        failOnStandardError: true
