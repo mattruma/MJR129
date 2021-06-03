@@ -16,10 +16,20 @@ stages:
   - job: Validate
 
     steps:
-
-    - task: AzurePowerShell@5
+    - task: AzureCLI@2
       inputs:
         azureSubscription: $(SubscriptionId)
-        ScriptPath: $(Build.SourcesDirectory)/deploy.ps1
-        ScriptArguments: -Prefix $(Prefix)
-        azurePowerShellVersion: LatestVersion
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          az config set auto-upgrade.prompt=no
+          az config set auto-upgrade.enable=yes
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(SubscriptionId)
+        scriptType: pscore
+        scriptPath: $(Build.SourcesDirectory)/deploy.ps1
+        arguments:
+          --Prefix $(Prefix) `
+          -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
