@@ -22,7 +22,7 @@ stages:
         scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
-          az upgrade
+          az upgrade --yes
 
     - task: AzureCLI@2
       inputs:
