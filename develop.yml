@@ -24,6 +24,7 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
           az --version
+          az upgrade --yes
 
     - task: AzureCLI@2
       inputs:
