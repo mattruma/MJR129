@@ -19,8 +19,8 @@ stages:
 
     - task: AzurePowerShell@5
       inputs:
-        azureSubscription: $(SubscriptionId)''
-        ScriptType: 'FilePath'
-        ScriptPath: 'deploy.ps1'
-        ScriptArguments: '-Prefix $(Prefix)'
-        azurePowerShellVersion: 'LatestVersion'
+        azureSubscription: $(SubscriptionId)
+        ScriptType: FilePath
+        ScriptPath: deploy.ps1
+        ScriptArguments: -Prefix $(Prefix)
+        azurePowerShellVersion: LatestVersion
