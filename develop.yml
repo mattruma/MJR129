@@ -21,6 +21,15 @@ stages:
       inputs:
         azureSubscription: $(SubscriptionId)
         scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          az config set auto-upgrade.prompt=no
+          az config set auto-upgrade.enable=yes
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(SubscriptionId)
+        scriptType: pscore
         scriptPath: $(Build.SourcesDirectory)/deploy.ps1
         arguments:
           -Prefix $(Prefix) `
