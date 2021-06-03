@@ -51,7 +51,7 @@ stages:
     dependsOn: WaitingApproval
     environment: Develop
     strategy:
-      runonce:
+      runOnce:
         deploy:
       
           steps:
