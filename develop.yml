@@ -20,8 +20,6 @@ stages:
     - task: AzurePowerShell@5
       inputs:
         azureSubscription: $(SubscriptionId)
-        ScriptType: FilePath
         ScriptPath: $(Build.SourcesDirectory)/deploy.ps1
         ScriptArguments: -Prefix $(Prefix)
         azurePowerShellVersion: LatestVersion
-        failOnStandardError: true
