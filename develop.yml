@@ -20,7 +20,7 @@ stages:
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(SubscriptionId)
-        scriptType: ps
+        scriptType: pscore
         scriptPath: $(Build.SourcesDirectory)/deploy.ps1
         arguments:
           -Prefix $(Prefix) `
