@@ -32,6 +32,7 @@ stages:
           -TemplateFile $(System.DefaultWorkingDirectory)/deploy.bicep
     
   - job: WaitingApproval
+    dependsOn: Validate
     pool: server
     timeoutInMinutes: 4320 # job times out in 3 days
 
@@ -47,6 +48,7 @@ stages:
         onTimeout: 'resume'
    
   - job: Deploy
+    dependsOn: WaitingApproval
 
     steps:
   
