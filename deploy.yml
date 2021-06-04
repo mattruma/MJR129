@@ -19,10 +19,6 @@ stages:
 
     steps:
 
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
     - task: AzureCLI@2
       displayName: Validate
       inputs:
@@ -82,10 +78,6 @@ stages:
 
     steps:
 
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
     - task: AzureCLI@2
       displayName: StagingValidate
       inputs:
@@ -144,11 +136,7 @@ stages:
   - job: ProductionValidate
 
     steps:
-
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
+      
     - task: AzureCLI@2
       displayName: ProductionValidate
       inputs:
