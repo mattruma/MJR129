@@ -1,5 +1,6 @@
 trigger:
 - develop
+- main
 
 pool:
   vmImage: ubuntu-latest
@@ -114,6 +115,69 @@ stages:
   - deployment: StagingDeploy
     dependsOn: StagingWaitingApproval
     environment: Staging
+    strategy:
+      runOnce:
+        deploy:
+      
+          steps:
+                
+          - checkout: self 
+        
+          - task: AzureCLI@2
+            displayName: Deploy
+            inputs:
+              azureSubscription: $(SubscriptionId)
+              scriptType: pscore
+              scriptPath: $(Build.SourcesDirectory)/deploy.ps1
+              arguments:
+                -Prefix $(Prefix) `
+                -TemplateFile $(Build.SourcesDirectory)/deploy.bicep
+
+- stage: Production
+  condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+
+  variables:
+  - group: Production
+
+  jobs:      
+
+  - job: ProductionValidate
+
+    steps:
+
+    - script: az --version
+
+    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
+
+    - task: AzureCLI@2
+      displayName: ProductionValidate
+      inputs:
+        azureSubscription: $(SubscriptionId)
+        scriptType: pscore
+        scriptPath: $(Build.SourcesDirectory)/validate.ps1
+        arguments:
+          -Prefix $(Prefix) `
+          -TemplateFile $(Build.SourcesDirectory)/deploy.bicep
+    
+  - job: ProductionWaitingApproval
+    dependsOn: ProductionValidate
+    pool: server
+    timeoutInMinutes: 4320 # job times out in 3 days
+
+    steps:
+
+    - task: ManualValidation@0
+      displayName: ProductionWaitingApproval
+      timeoutInMinutes: 1440 # task times out in 1 day
+      inputs:
+        notifyUsers: |
+          maruma@microsoft.com
+        instructions: 'Please validate the build configuration and resume'
+        onTimeout: 'resume'
+   
+  - deployment: ProductionDeploy
+    dependsOn: ProductionWaitingApproval
+    environment: Production
     strategy:
       runOnce:
         deploy:
