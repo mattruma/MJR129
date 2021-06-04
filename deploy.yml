@@ -19,10 +19,6 @@ stages:
 
     steps:
 
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
     - task: AzureCLI@2
       displayName: Validate
       inputs:
@@ -45,7 +41,7 @@ stages:
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
         notifyUsers: |
-          maruma@microsoft.com
+          $(Email)
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
    
@@ -82,10 +78,6 @@ stages:
 
     steps:
 
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
     - task: AzureCLI@2
       displayName: StagingValidate
       inputs:
@@ -108,7 +100,7 @@ stages:
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
         notifyUsers: |
-          maruma@microsoft.com
+          $(Email)
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
    
@@ -144,11 +136,7 @@ stages:
   - job: ProductionValidate
 
     steps:
-
-    - script: az --version
-
-    - script: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-
+      
     - task: AzureCLI@2
       displayName: ProductionValidate
       inputs:
@@ -171,7 +159,7 @@ stages:
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
         notifyUsers: |
-          maruma@microsoft.com
+          $(Email)
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
    

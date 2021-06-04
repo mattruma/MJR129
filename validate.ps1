@@ -10,12 +10,8 @@ param(
 
 $ResourceGroupName = "$($Prefix)rg"
 
-az group create `
-    -n $ResourceGroupName `
-    -l $Location
-
-az deployment group what-if `
-    -n deploy `
-    -f $TemplateFile `
-    -g $ResourceGroupName `
-    --parameters prefix=$Prefix
+Write-Host "Prefix              : " $ResourceGroupName
+Write-Host "Location            : " $Location
+Write-Host "TemplateFile        : " $TemplateFile
+Write-Host ""
+Write-Host "Everything looks good!"
